@@ -10,16 +10,15 @@ def testing1():
 
 def consultabbdd():
     try:
-
         usuariosDestinos = []
         hoy = datetime.now()
         finEmb = hoy - timedelta(weeks=42)
 
-        conexion = psycopg2.connect(user="seqapevgjsmefx",
-                                      password="0098e32dd78dbd3aaab191910e1aa655b0e6252f5fd1e2a9ad24aadcb5eead85",
-                                      host="ec2-52-71-85-210.compute-1.amazonaws.com",
+        conexion = psycopg2.connect(user="tfg",
+                                      password="1233",
+                                      host="localhost",
                                       port=5432,
-                                      database="d2f5jggrnej8a8")
+                                      database="basedatostfg")
         cursor = conexion.cursor()
         query_todosUsuarios = ' select * from "Gestion_user" where "fechaUltMens" >= %s AND CURRENT_DATE >= "fechaUltMens"'
 
@@ -36,8 +35,9 @@ def consultabbdd():
             cursor.execute('select count(*) from "Gestion_patada" where diario_id=%s;', (str(diario_id),))
             resultado_query_patada = cursor.fetchall()
 
-            if (resultado_query_patada[0][0] != 0):
+            if(resultado_query_patada[0][0] != 0 ):
                 usuariosDestinos.append(usuario[6])
+
 
         hoy = datetime.now()
         menos28Sem = hoy - timedelta(weeks=28)
@@ -45,6 +45,7 @@ def consultabbdd():
         usuariosDestinos.append("majive02696@gmail.com")
         usuariosDestinos.append("majive026962@gmail.com")
         usuariosDestinos.append("majive026963@gmail.com")
+
 
         asunto = "Aviso patadas"
         mensaje = MIMEText("Le recordamos que hace más de dos horas que no registra patadas en nuestro sistema.")
@@ -64,6 +65,9 @@ def consultabbdd():
 
             serverSMTP.close()
 
+        print("email enviado")
+
+
     except (Exception, psycopg2.Error) as error:
         print("Error while fetching data from PostgreSQL", error)
 
@@ -73,16 +77,17 @@ def consultabbdd():
            cursor.close()
            conexion.close()
            print("PostgreSQL connection is closed")
+consultabbdd()
 
 
 
 
-if __name__ == '__main__':
-    from apscheduler.schedulers.blocking import BlockingScheduler
-    sched = BlockingScheduler()
-    sched.add_job(consultabbdd, 'cron', id='run_every_1_min_email', hour='*/2')
- #   sched.add_job(testing1, 'cron', id='run_every_1_min', minute='*/2')
-sched.start()
+# if __name__ == '__main__':
+#     from apscheduler.schedulers.blocking import BlockingScheduler
+#     sched = BlockingScheduler()
+#     sched.add_job(consultabbdd, 'cron', id='run_every_1_min_email', minute='*/2')
+#     sched.add_job(testing1, 'cron', id='run_every_1_min', minute='*/2')
+# sched.start()
 
 
 
