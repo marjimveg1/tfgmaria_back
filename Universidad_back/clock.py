@@ -21,7 +21,7 @@ def consultabbdd():
                                       port=5432,
                                       database="d2f5jggrnej8a8")
         cursor = conexion.cursor()
-        query_todosUsuarios = ' select * from "Gestion_user" where "fechaUltMens" >= %s AND CURRENT_DATE >= "fechaUltMens"'
+        query_todosUsuarios = ' select * from "Gestion_user" where "fechaUltMens" >= %s AND CURRENT_DATE >= "fechaUltMens" AND "quiereNot"=True'
 
         cursor.execute(query_todosUsuarios, (str(finEmb),))
         resultado_query_todoUsuarios = cursor.fetchall()
@@ -80,7 +80,7 @@ def consultabbdd():
 if __name__ == '__main__':
     from apscheduler.schedulers.blocking import BlockingScheduler
     sched = BlockingScheduler()
-    sched.add_job(consultabbdd, 'cron', id='run_every_1_min_email', hour='*/2')
+  #  sched.add_job(consultabbdd, 'cron', id='run_every_1_min_email', hour='*/2')
  #   sched.add_job(testing1, 'cron', id='run_every_1_min', minute='*/2')
 sched.start()
 

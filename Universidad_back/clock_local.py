@@ -20,7 +20,7 @@ def consultabbdd():
                                       port=5432,
                                       database="basedatostfg")
         cursor = conexion.cursor()
-        query_todosUsuarios = ' select * from "Gestion_user" where "fechaUltMens" >= %s AND CURRENT_DATE >= "fechaUltMens"'
+        query_todosUsuarios = ' select * from "Gestion_user" where "fechaUltMens" >= %s AND CURRENT_DATE >= "fechaUltMens" AND "quiereNot"=True'
 
         cursor.execute(query_todosUsuarios, (str(finEmb),))
         resultado_query_todoUsuarios = cursor.fetchall()
